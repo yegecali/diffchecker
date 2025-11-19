@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiffChecker API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        h1 {
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 0;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            padding: 10px;
+            padding-left: 30px;
+            color: #555;
+            position: relative;
+        }
+
+        li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .endpoint-box {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            border-left: 4px solid #667eea;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: white;
+            font-size: 0.85em;
+        }
+
+        .method.post {
+            background: #667eea;
+        }
+
+        .method.get {
+            background: #764ba2;
+        }
+
+        .path {
+            font-family: 'Courier New', monospace;
+            color: #333;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+                padding: 20px;
+            }
+
+            pre {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 DiffChecker API</h1>
+        <div class="content">
+            <h2>Endpoints disponibles</h2>
+
+            <div class="endpoint-box">
+                <span class="method post">POST</span>
+                <span class="path">/api/diff/compare</span>
+                <p style="margin-top: 10px;">Compara dos textos enviando JSON con los campos "antes" y "despues"</p>
+                <pre><code>curl -X POST http://localhost:8080/api/diff/compare \
+  -H "Content-Type: application/json" \
+  -d '{
+    "antes": "linea 1\nlinea 2\nlinea 3",
+    "despues": "linea 1 modificada\nlinea 2\nlinea 3\nlinea 4"
+  }'</code></pre>
+            </div>
+
+            <div class="endpoint-box">
+                <span class="method get">GET</span>
+                <span class="path">/api/diff/compare</span>
+                <p style="margin-top: 10px;">Compara dos textos usando parámetros query</p>
+                <pre><code>http://localhost:8080/api/diff/compare?antes=texto1&despues=texto2</code></pre>
+            </div>
+
+            <h2>Características</h2>
+            <ul>
+                <li>Visualización side-by-side como DiffChecker</li>
+                <li>Números de línea para cada comparación</li>
+                <li>Diseño responsive adaptable a móviles</li>
+                <li>Interfaz moderna con gradientes</li>
+                <li>Soporte para textos multilinea</li>
+                <li>Escaping automático de caracteres HTML</li>
+            </ul>
+
+            <h2>Especificación de Request</h2>
+            <p><strong>Content-Type:</strong> application/json</p>
+            <pre><code>{
+  "antes": "string (texto original)",
+  "despues": "string (texto modificado)"
+}</code></pre>
+
+            <h2>Especificación de Response</h2>
+            <p><strong>Content-Type:</strong> text/html</p>
+            <p>Retorna un documento HTML con la comparación visual de los dos textos</p>
+
+            <h2>Códigos de Respuesta</h2>
+            <ul>
+                <li><strong>200 OK:</strong> Comparación exitosa</li>
+                <li><strong>400 Bad Request:</strong> Parámetros faltantes o inválidos</li>
+                <li><strong>500 Internal Server Error:</strong> Error al procesar la comparación</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

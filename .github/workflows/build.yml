@@ -1,0 +1,74 @@
+name: Build and Generate JAR
+
+on:
+  push:
+    branches: [ master, main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [ '21' ]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Display Java version
+      run: java -version
+
+    - name: Build with Maven
+      run: mvn -B clean package -DskipTests
+      env:
+        MAVEN_OPTS: "--add-opens java.base/java.lang=ALL-UNNAMED"
+
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: diffchecker-jar-${{ matrix.java-version }}-${{ github.sha }}
+        path: target/*.jar
+        retention-days: 30
+
+    - name: Create GitHub Release (on tags)
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: target/*.jar
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build Success - Push to Master
+      if: success() && github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: |
+        echo "✅ Build completed successfully on master branch!"
+        echo "📦 JAR generated and available as artifact"
+
+    - name: Build Success - Pull Request
+      if: success() && github.event_name == 'pull_request'
+      run: |
+        echo "✅ Build completed successfully for PR!"
+        echo "📦 JAR generated and available as artifact"
+
+    - name: Build Success - Tag Release
+      if: success() && startsWith(github.ref, 'refs/tags/v')
+      run: |
+        echo "✅ Build completed successfully for release tag!"
+        echo "🚀 Release created with JAR artifacts"
+
+    - name: Build Failure Notification
+      if: failure()
+      run: echo "❌ Build failed! Check logs for details."
