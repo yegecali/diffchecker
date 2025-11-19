@@ -42,12 +42,90 @@ jobs:
         path: target/*.jar
         retention-days: 30
 
+    - name: Generate Release Notes
+      if: startsWith(github.ref, 'refs/tags/v')
+      id: release_notes
+      run: |
+        echo "## 🚀 DiffChecker Release" > release_notes.md
+        echo "" >> release_notes.md
+        echo "### 📦 Contenido" >> release_notes.md
+        echo "- JAR ejecutable: \`diffchecker-1.0.0-runner.jar\`" >> release_notes.md
+        echo "- Java 21 requerido" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### ▶️ Cómo Usar" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**1. Descargar el JAR desde esta release**" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**2. Ejecutar la aplicación:**" >> release_notes.md
+        echo "\`\`\`bash" >> release_notes.md
+        echo "java -jar diffchecker-1.0.0-runner.jar" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**3. Acceder a la aplicación:**" >> release_notes.md
+        echo "- URL: \`http://localhost:8080\`" >> release_notes.md
+        echo "- API Endpoint: \`POST http://localhost:8080/api/diff/compare\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### 📝 Ejemplo de Uso (cURL)" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "\`\`\`bash" >> release_notes.md
+        echo "curl -X POST http://localhost:8080/api/diff/compare \\" >> release_notes.md
+        echo "  -H \"Content-Type: application/json\" \\" >> release_notes.md
+        echo "  -d '{" >> release_notes.md
+        echo "    \"antes\": \"Texto antiguo\"," >> release_notes.md
+        echo "    \"despues\": \"Texto nuevo\"" >> release_notes.md
+        echo "  }'" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### 🔗 Endpoints Disponibles" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "#### POST /api/diff/compare" >> release_notes.md
+        echo "Compara dos textos y retorna HTML con las diferencias" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**Request:**" >> release_notes.md
+        echo "\`\`\`json" >> release_notes.md
+        echo "{\"antes\": \"string\", \"despues\": \"string\"}" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**Response:** HTML con diferencias resaltadas" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "#### GET /api/diff/compare" >> release_notes.md
+        echo "Compara dos textos usando parámetros query" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**Query Params:**" >> release_notes.md
+        echo "- \`antes\`: Texto original" >> release_notes.md
+        echo "- \`despues\`: Texto modificado" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**Ejemplo:**" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "GET /api/diff/compare?antes=antiguo&despues=nuevo" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### 📋 Requisitos Mínimos" >> release_notes.md
+        echo "- Java 21 o superior" >> release_notes.md
+        echo "- Puerto 8080 disponible (o configurable)" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### 🐛 Troubleshooting" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**Puerto 8080 en uso:**" >> release_notes.md
+        echo "\`\`\`bash" >> release_notes.md
+        echo "java -Dquarkus.http.port=9000 -jar diffchecker-1.0.0-runner.jar" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "**Ver logs detallados:**" >> release_notes.md
+        echo "\`\`\`bash" >> release_notes.md
+        echo "java -Dquarkus.log.level=DEBUG -jar diffchecker-1.0.0-runner.jar" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        cat release_notes.md
+
     - name: Create GitHub Release (on tags)
       if: startsWith(github.ref, 'refs/tags/v')
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
-        files: target/*.jar
-        generate_release_notes: true
+        files: target/diffchecker-*.jar
+        body_path: release_notes.md
+        draft: false
+        prerelease: false
+        generate_release_notes: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -67,7 +145,7 @@ jobs:
       if: success() && startsWith(github.ref, 'refs/tags/v')
       run: |
         echo "✅ Build completed successfully for release tag!"
-        echo "🚀 Release created with JAR artifacts"
+        echo "🚀 Release created with JAR artifacts and documentation"
 
     - name: Build Failure Notification
       if: failure()
