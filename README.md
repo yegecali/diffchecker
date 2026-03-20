@@ -1,33 +1,99 @@
-# React + TypeScript + Vite
+# Diff Checker 🔍
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Un comparador de textos online gratuito y de código abierto. Compara dos textos y visualiza las diferencias lado a lado con resaltado de colores.
 
-Currently, two official plugins are available:
+## ✨ Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- 📝 **Comparación lado a lado**: Visualiza las diferencias de forma clara
+- 📁 **Carga de archivos**: Soporta múltiples formatos (.txt, .md, .json, .csv, .xml, .html, .css, .js, .ts, .py, .java, .sql, .sh, .yaml)
+- 🖱️ **Drag & Drop**: Arrastra archivos directamente
+- 🎨 **Resaltado de cambios**: 
+  - 🔴 Rojo para texto eliminado
+  - 🟢 Verde para texto agregado
+- 📊 **Estadísticas**: Contador de caracteres y líneas
+- 📱 **Responsive**: Compatible con desktop y móvil
+- 🚀 **Fast**: Construido con React, Vite y TypeScript
 
-## React Compiler
+## 🚀 Tecnologías
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 19** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **diff-match-patch** - Diff algorithm
+- **GitHub Pages** - Hosting
 
-## Expanding the ESLint configuration
+## 💻 Desarrollo
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Requisitos
+- Node.js 18+
+- npm
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Instalación
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
+```bash
+git clone https://github.com/yegecali/diffchecker.git
+cd diffchecker
+npm install
+```
+
+### Desarrollo
+
+```bash
+npm run dev
+```
+
+Abre [http://localhost:5174](http://localhost:5174) en tu navegador.
+
+### Build
+
+```bash
+npm run build
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## 📂 Estructura del Proyecto
+
+```
+src/
+├── components/
+│   ├── FileUpload.tsx    # Componente de carga de archivos
+│   ├── Modal.tsx         # Componente modal reutilizable
+│   ├── DiffViewer.tsx    # Visor de diferencias
+│   └── TextInput.tsx     # Entrada de texto
+├── App.tsx               # Componente principal
+├── App.css               # Estilos personalizados
+├── index.css             # Estilos globales
+└── main.tsx              # Punto de entrada
+```
+
+## 🌐 Despliegue
+
+El sitio se despliega automáticamente a GitHub Pages cuando haces push a la rama `main` mediante GitHub Actions.
+
+**URL de producción**: https://yegecali.github.io/diffchecker/
+
+## 📝 Licencia
+
+MIT - Siéntete libre de usar este proyecto para lo que necesites.
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor abre un issue o un pull request.
+
+## 👨‍💻 Autor
+
+Desarrollado por [yegecali](https://github.com/yegecali)
+
+---
+
+⭐ Si te gusta el proyecto, no olvides darle una estrella en GitHub!
+
       tseslint.configs.stylisticTypeChecked,
 
       // Other configs...
