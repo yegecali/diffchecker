@@ -7,7 +7,7 @@ Un comparador de textos online gratuito y de código abierto. Compara dos textos
 - 📝 **Comparación lado a lado**: Visualiza las diferencias de forma clara
 - 📁 **Carga de archivos**: Soporta múltiples formatos (.txt, .md, .json, .csv, .xml, .html, .css, .js, .ts, .py, .java, .sql, .sh, .yaml)
 - 🖱️ **Drag & Drop**: Arrastra archivos directamente
-- 🎨 **Resaltado de cambios**: 
+- 🎨 **Resaltado de cambios**:
   - 🔴 Rojo para texto eliminado
   - 🟢 Verde para texto agregado
 - 📊 **Estadísticas**: Contador de caracteres y líneas
@@ -26,6 +26,7 @@ Un comparador de textos online gratuito y de código abierto. Compara dos textos
 ## 💻 Desarrollo
 
 ### Requisitos
+
 - Node.js 18+
 - npm
 
@@ -105,9 +106,11 @@ Desarrollado por [yegecali](https://github.com/yegecali)
       },
       // other options...
     },
-  },
+
+},
 ])
-```
+
+````
 
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
@@ -136,4 +139,4 @@ export default defineConfig([
     },
   },
 ])
-```
+````
